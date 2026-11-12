@@ -1,22 +1,30 @@
 # Enterprise SaaS Project Management
 
-A TypeScript-first MERN project management platform designed around multi-tenant workspaces, teams, projects, tasks, and role-based access control.
+A TypeScript MERN workspace and project management application.
 
-## Stack
-- React + TypeScript client (planned)
-- Node.js, Express, TypeScript API
-- MongoDB + Mongoose
-- JWT authentication, Zod validation
-- Socket.IO for live updates (planned)
+## Features
+- JWT authentication and password hashing
+- Workspaces with owner/admin/member roles
+- Projects, tasks, priorities, status workflows and comments
+- Workspace dashboard metrics
+- React + Vite interface
+- MongoDB/Mongoose, Zod validation, Helmet and centralized errors
 
-## Getting started
-1. Install Node.js 20+ and MongoDB.
-2. Copy `.env.example` to `.env` and set `MONGODB_URI` and `JWT_SECRET`.
-3. Run `npm install`.
-4. Run `npm run dev`.
+## Run locally
+Requirements: Node.js 20+ and MongoDB 7+.
+1. Copy .env.example to .env and set a random JWT_SECRET of at least 32 characters.
+2. Run npm install.
+3. Run npm run dev.
+4. Open http://localhost:5173 (API: http://localhost:4000).
 
-## Current implementation
-This repository is the initial API foundation. Domain modules, authorization policies, tests, and the React application will be added in subsequent commits.
+## API
+Auth: POST /api/auth/register, POST /api/auth/login, GET /api/auth/me
+Workspaces: GET/POST /api/workspaces, GET/POST /api/workspaces/:id/members
+Projects: GET/POST /api/projects, GET/PATCH/DELETE /api/projects/:id
+Tasks: GET/POST /api/tasks, PATCH/DELETE /api/tasks/:id, GET/POST /api/tasks/:id/comments
+Dashboard: GET /api/dashboard?workspaceId=...
 
-## Engineering priorities
-Tenant isolation is enforced at the service/query boundary; secrets are environment-based; API inputs are validated; errors are handled centrally.
+Protected endpoints require Authorization: Bearer <token>. Workspace access is checked server-side.
+
+## Production hardening
+Before real customer use, add rate limiting, email verification, password reset, audit logs, backups, monitoring, HTTPS, managed secrets and CI. This is a portfolio application and has not undergone an independent security audit.
