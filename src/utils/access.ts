@@ -1,0 +1,2 @@
+import {Types} from "mongoose";import {Workspace} from "../models/Workspace";
+export async function requireWorkspace(workspaceId:string,userId:string){if(!Types.ObjectId.isValid(workspaceId))throw Object.assign(new Error("Workspace not found"),{status:404});const workspace=await Workspace.findOne({_id:workspaceId,"members.user":userId});if(!workspace)throw Object.assign(new Error("Workspace not found"),{status:404});const member=workspace.members.find((m:any)=>String(m.user)===userId);return {workspace,role:member?.role??"member"};}
