@@ -1,0 +1,3 @@
+import {NextFunction,Request,Response} from "express";
+export function notFound(_req:Request,res:Response):void{res.status(404).json({message:"Route not found"});}
+export function errorHandler(err:Error & {status?:number;code?:number},_req:Request,res:Response,_next:NextFunction):void{if(err.name==="ZodError"||err.name==="ValidationError"){res.status(400).json({message:err.message});return;}if(err.name==="CastError"){res.status(400).json({message:"Invalid resource id"});return;}if(err.code===11000){res.status(409).json({message:"A record with that value already exists"});return;}console.error(err);res.status(err.status??500).json({message:err.status?err.message:"Internal server error"});}
